@@ -10,7 +10,9 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@kitware/vtk.js": "^24.14.2",
     "expo": "~45.0.0",
+    "expo-gl": "~11.3.0",
     "expo-status-bar": "~1.3.0",
     "react": "17.0.2",
     "react-dom": "17.0.2",
