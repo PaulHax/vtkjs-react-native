@@ -90,10 +90,13 @@ const onContextCreate = (gl) => {
   // Create a div section to put this into
   // ----------------------------------------------------------------------------
 
+  const { drawingBufferWidth: width, drawingBufferHeight: height } = gl;
   const containerShim = {
     appendChild: noop,
     style: {},
-    getBoundingClientRect: () => SIZE,
+    getBoundingClientRect: () => {
+      width, height;
+    },
   };
   apiSpecificRenderWindow.setContainer(containerShim);
 
@@ -101,10 +104,19 @@ const onContextCreate = (gl) => {
   // Capture size of the container and set it to the renderWindow
   // ----------------------------------------------------------------------------
 
-  const { width, height } = containerShim.getBoundingClientRect();
   apiSpecificRenderWindow.setSize(width, height);
 
-  renderWindow.render();
+  // animation loop
+  const render = () => {
+    timeout = requestAnimationFrame(render);
+
+    renderer.getActiveCamera().azimuth(0.25);
+    renderer.resetCameraClippingRange();
+    renderWindow.render();
+
+    gl.endFrameEXP(); // like swapbuffers
+  };
+  render();
 
   // ----------------------------------------------------------------------------
   // Setup an interactor to handle mouse events
